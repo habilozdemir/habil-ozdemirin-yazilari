@@ -25,30 +25,30 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
+      - uses: actions/configure-pages@v5
 
-      - name: Process PDFs
-        run: |
+      - run: |
           mkdir -p _site
+          echo "<!DOCTYPE html><html><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><title>Yazılar</title></head><body><h1>Yazılar</h1><ul>" > _site/index.html
+          
           for file in *.pdf; do
             if [ -f "$file" ]; then
               filename=$(basename "$file" .pdf)
-              docker run --rm -v "$(pwd):/pdf" bwits/pdf2htmlex pdf2htmlEX --embed-css 1 --embed-font 1 "/pdf/$file" "/pdf/_site/$filename.html"
-              echo "<li><a href='./$filename.html'>$filename</a></li>" >> _site/list.html
+              node -e "
+                const { execSync } = require('child_process');
+                try {
+                  execSync('docker run --rm -v \x22' + process.cwd() + ':/pdf\x22 jreleese/pdf2htmlex pdf2htmlEX --embed-css 1 --embed-font 1 \x22/pdf/' + '$file' + '\x22 \x22/pdf/_site/' + '$filename' + '.html\x22');
+                } catch (e) {
+                  console.log(e);
+                }
+              "
+              echo "<li><a href='./$filename.html'>$filename</a></li>" >> _site/index.html
             fi
           done
           
-          echo "<!DOCTYPE html><html><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><title>Yazılar</title></head><body><h1>Yazılar</h1><ul>" > _site/index.html
-          if [ -f _site/list.html ]; then
-            cat _site/list.html >> _site/index.html
-          fi
           echo "</ul></body></html>" >> _site/index.html
-          rm -f _site/list.html
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v3
 
-      - name: Deploy to GitHub Pages
-        id: deployment
+      - id: deployment
         uses: actions/deploy-pages@v4
