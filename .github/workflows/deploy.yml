@@ -1,0 +1,39 @@
+name: Deploy
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '*.pdf'
+
+permissions:
+  contents: write
+
+jobs:
+  convert_pdf:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Process PDFs
+        run: |
+          mkdir -p output
+          for file in *.pdf; do
+            if [ -f "$file" ]; then
+              filename=$(basename "$file" .pdf)
+              docker run --rm -v "$(pwd):/pdf" bwits/pdf2htmlex pdf2htmlEX --embed-css 1 --embed-font 1 "/pdf/$file" "/pdf/output/$filename.html"
+              echo "<li><a href='./$filename.html'>$filename</a></li>" >> output/list.html
+            fi
+          done
+          
+          echo "<!DOCTYPE html><html><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><title>Yazılar</title></head><body><h1>Yazılar</h1><ul>" > output/index.html
+          if [ -f output/list.html ]; then
+            cat output/list.html >> output/index.html
+          fi
+          echo "</ul></body></html>" >> output/index.html
+          rm -f output/list.html
+
+      - uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./output
