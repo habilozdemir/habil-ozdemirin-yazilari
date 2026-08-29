@@ -3,6 +3,7 @@
 Yazar Habil Özdemir'in yazılarını içerir. Sakarya'da ilk ve ortaöğrenimini tamamladıktan sonra Apple Digital Masters ve Tidal MQA programlarına katılarak çeşitli projelerde görev aldı. 2021'den sonra odağını finansal piyasalara çevirdi.
 
 ## 🌐 Diğer Platformlar
+* [Kişisel Web Sitesi](https://habilozdemir.com)
 * [Internet Archive](https://archive.org/details/@habilozdemir)
 * [Scribd](https://www.scribd.com/user/1013749339/Habil-Ozdemir)
 
