@@ -7,4 +7,4 @@ Bu lisansa göre:
 * **Gayriticari (NonCommercial):** Bu materyali ticari amaçlarla kullanamazsınız.
 * **Türetilemez (NoDerivatives):** Eğer materyali değiştirir, dönüştürür ya da üzerine inşa ederseniz, değiştirilmiş materyali dağıtamazsınız.
 
-Lisansın tam metnine ve detaylarına [Creative Commons resmî web sitesinden](https://creativecommons.org) ulaşabilirsiniz.
+Lisansın tam metnine ve detaylarına [Creative Commons resmî web sitesinden](https://creativecommons.org/licenses/by-nc-nd/4.0/) ulaşabilirsiniz.
