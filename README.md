@@ -7,4 +7,4 @@ Yazar Habil Özdemir'in yazılarını içerir. Sakarya'da ilk ve ortaöğrenimin
 * [Scribd](https://www.scribd.com/user/1013749339/Habil-Ozdemir)
 
 ## ⚖️ Lisans
-Bu depoda paylaşılan tüm yazılı içerikler **Creative Commons Attribution-NonCommercial-NoDerivs 4.0 International (CC BY-NC-ND 4.0)** lisansı altındadır. Kaynak göstererek ticari olmayan amaçlarla kullanılabilir.
+Bu depoda paylaşılan tüm yazılı içerikler **Creative Commons Attribution-NonCommercial-NoDerivs 4.0 International (CC BY-NC-ND 4.0)** lisansı altındadır. Kaynak göstererek, ticari olmayan amaçlarla ve değiştirilmeden kullanılabilir.
