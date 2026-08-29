@@ -5,35 +5,50 @@ on:
       - main
     paths:
       - '*.pdf'
+  workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
   convert_pdf:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
       - name: Process PDFs
         run: |
-          mkdir -p output
+          mkdir -p _site
           for file in *.pdf; do
             if [ -f "$file" ]; then
               filename=$(basename "$file" .pdf)
-              docker run --rm -v "$(pwd):/pdf" bwits/pdf2htmlex pdf2htmlEX --embed-css 1 --embed-font 1 "/pdf/$file" "/pdf/output/$filename.html"
-              echo "<li><a href='./$filename.html'>$filename</a></li>" >> output/list.html
+              docker run --rm -v "$(pwd):/pdf" bwits/pdf2htmlex pdf2htmlEX --embed-css 1 --embed-font 1 "/pdf/$file" "/pdf/_site/$filename.html"
+              echo "<li><a href='./$filename.html'>$filename</a></li>" >> _site/list.html
             fi
           done
           
-          echo "<!DOCTYPE html><html><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><title>Yazılar</title></head><body><h1>Yazılar</h1><ul>" > output/index.html
-          if [ -f output/list.html ]; then
-            cat output/list.html >> output/index.html
+          echo "<!DOCTYPE html><html><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><title>Yazılar</title></head><body><h1>Yazılar</h1><ul>" > _site/index.html
+          if [ -f _site/list.html ]; then
+            cat _site/list.html >> _site/index.html
           fi
-          echo "</ul></body></html>" >> output/index.html
-          rm -f output/list.html
+          echo "</ul></body></html>" >> _site/index.html
+          rm -f _site/list.html
 
-      - uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./output
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
